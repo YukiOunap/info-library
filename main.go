@@ -19,12 +19,19 @@ type Artist struct {
 	DatesLocations map[string][]string `json:"datesLocations"`
 }
 
-func Index(w http.ResponseWriter, r *http.Request) {
-	t, err := template.ParseFiles("templates/index.html")
+var artists []Artist
+
+func GetTemp(w http.ResponseWriter, file string) (t *template.Template) {
+	t, err := template.ParseFiles(file)
 	if err != nil {
 		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 		return
 	}
+	return t
+}
+
+func Index(w http.ResponseWriter, r *http.Request) {
+	t := GetTemp(w, "templates/index.html")
 
 	response, err := http.Get("https://groupietrackers.herokuapp.com/api/artists")
 	if err != nil {
@@ -34,7 +41,6 @@ func Index(w http.ResponseWriter, r *http.Request) {
 	}
 	defer response.Body.Close()
 
-	var artists []Artist
 	err = json.NewDecoder(response.Body).Decode(&artists)
 	if err != nil {
 		fmt.Println("Error decoding JSON:", err)
@@ -46,46 +52,22 @@ func Index(w http.ResponseWriter, r *http.Request) {
 }
 
 func ArtistDetail(w http.ResponseWriter, r *http.Request) {
+	t := GetTemp(w, "templates/detail.html")
+
 	r.ParseForm()
-
-	t, err := template.ParseFiles("templates/detail.html")
-	if err != nil {
-		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-		return
-	}
-
-	response, err := http.Get("https://groupietrackers.herokuapp.com/api/artists")
-	if err != nil {
-		fmt.Println("Error fetching data:", err)
-		http.Error(w, "Error fetching data", http.StatusInternalServerError)
-		return
-	}
-	defer response.Body.Close()
-
-	ID := r.FormValue("artistID")
-	fmt.Println("ID:", ID)
-
-	var artists []Artist
-	err = json.NewDecoder(response.Body).Decode(&artists)
-	if err != nil {
-		fmt.Println("Error decoding JSON:", err)
-		http.Error(w, "Error decoding JSON", http.StatusInternalServerError)
-		return
-	}
+	id := r.FormValue("artistID")
+	url := r.FormValue("artistDetail")
 
 	var targetArtist Artist
-	intID, _ := strconv.Atoi(ID)
+	intId, _ := strconv.Atoi(id)
 	for _, artist := range artists {
-		if artist.Id == intID {
+		if artist.Id == intId {
 			targetArtist = artist
 			break
 		}
 	}
 
-	URL := r.FormValue("artistDetail")
-	fmt.Println("URL:", URL)
-
-	response, err = http.Get(URL)
+	response, err := http.Get(url)
 	if err != nil {
 		fmt.Println("Error fetching data:", err)
 		http.Error(w, "Error fetching data", http.StatusInternalServerError)
