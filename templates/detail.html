@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="/templates/style.css">
+    <title>Artist Detail</title>
+</head>
+
+<body>
+
+    <h1>{{ .Name }}</h1>
+    <img src="{{ .Image }}" alt="{{ .Name }} Image" width="300px" height="300px" >
+
+    <h2>Members</h2>
+    <ul>
+        {{ range .Members }}
+        <li>{{ . }}</li>
+        {{ end }}
+    </ul>
+
+    <h2>Creation Date</h2>
+    <p>{{ .CreationDate }}</p>
+    <h2>First Album</h2>
+    <p>{{ .FirstAlbum }}</p>
+
+    <h2>Concert Dates</h2>
+        <ul>
+            {{ range $location, $dates := .DatesLocations }}
+            <li>{{ $location }}, {{ range $dates }}{{ . }}, {{ end }}</li>
+            {{ end }}
+        </ul>
+
+    <a href="http://localhost:8080/" >Back</a>
+
+</body>
+</html>
