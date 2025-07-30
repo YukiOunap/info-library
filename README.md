@@ -1,24 +1,29 @@
-# Groupie Tracker
+# Info Library
 
-- [Groupie Tracker](#groupie-tracker)
-  - [Description](#description)
-  - [Usage: how to run](#usage-how-to-run)
-  - [Audit](#audit)
-  - [Author](#author)
+Go program hosts html server, displaying list of information extracted from the API with JSON format.
 
-## Description
-Go program hosts html server, displaying list of band and the info extracted from API date.
+- [Info Library](#info-library)
+  - [Used Technologies](#used-technologies)
+  - [Installation \& How to Use](#installation--how-to-use)
+  - [Spec Detail](#spec-detail)
 
-## Usage: how to run
-1. Initiate the html server on command line:
-   ```
-   go run .
-   ```
-2. Go to the server http://localhost:8080/
+## Used Technologies
 
-## Audit
-Follow the instructions in the audit page: https://github.com/01-edu/public/tree/master/subjects/groupie-tracker/audit
+- html
+- CSS
+- Go:
+	- encoding/json
+	- fmt
+	- html/template
+	- log
+	- net/http
+	- os
+	- strconv
 
-## Author
+## Installation & How to Use
 
-Yuki Kaneko
+
+
+## Spec Detail
+
+This web app extracts the data from API and display the data converted from JSON format in the proper styles suitable for app users.
