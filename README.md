@@ -22,7 +22,7 @@ Go program hosts html server, displaying list of information extracted from the 
 
 ## Installation & How to Use
 
-
+This app is being hosted on Render. You can access https://info-library.onrender.com and start trying.
 
 ## Spec Detail
 
