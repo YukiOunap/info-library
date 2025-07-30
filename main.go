@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
+	"log"
 	"net/http"
+	"os"
 	"strconv"
 )
 
@@ -20,8 +22,6 @@ type Artist struct {
 }
 
 var artists []Artist
-
-const port = process.env.PORT || 4000
 
 func GetTemp(w http.ResponseWriter, file string) (t *template.Template) {
 	t, err := template.ParseFiles(file)
@@ -92,5 +92,9 @@ func main() {
 	http.HandleFunc("/", Index)
 	http.HandleFunc("/detail", ArtistDetail)
 
-	http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+	}
+	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
